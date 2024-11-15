@@ -1,0 +1,16 @@
+version: '3'
+services: 
+  mongo: 
+    image: mongo 
+    ports:
+      - "27019:27017"    
+    restart: unless-stopped
+  app:
+    image: job-tarcker-test
+    restart: unless-stopped
+    ports:
+      - 49160:8080  
+    stdin_open: true
+    tty: true
+    depends_on:
+      - mongo
