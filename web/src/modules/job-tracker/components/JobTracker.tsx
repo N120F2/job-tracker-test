@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import * as React from 'react'
 
 import Container from './Container/Container'
@@ -15,7 +16,7 @@ const JobTracker: React.FC<JobTrackerProps> = () => {
   return (
     <VacanciesContext.Provider value={{ vacancies, setVacancies }}>
       <Container>
-        <div>Vacancies</div>
+        <Box component={'h2'}>Vacancies</Box>
         <JobList vacancies={vacancies} />
       </Container>
     </VacanciesContext.Provider>

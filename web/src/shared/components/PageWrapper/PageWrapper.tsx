@@ -1,20 +1,29 @@
+import { Box, Link } from '@mui/material'
 import * as React from 'react'
 
 interface PageWrapperProps extends React.PropsWithChildren {}
 
 const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
   return (
-    <div>
+    <Box>
       {children}
-      <footer>
+      <Box component={'footer'} sx={{ position: 'fixed', bottom: 20 }}>
         <div>Author: Sobal Uladzislau</div>
-        <div>
-          <a href={'https://github.com/N120F2'} target='_blank' rel='noopener noreferrer'>
+        <div>Email: sobolvladsav@gmail.com</div>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Link href={'https://github.com/N120F2'} target='_blank' rel='noopener noreferrer'>
             GitHub
-          </a>
-        </div>
-      </footer>
-    </div>
+          </Link>
+          <Link
+            href={'https://www.linkedin.com/in/uladzislau-sobal-ba43b8212/'}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            LinkedIn
+          </Link>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

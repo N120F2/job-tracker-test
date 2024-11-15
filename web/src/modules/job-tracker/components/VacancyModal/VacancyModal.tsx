@@ -1,3 +1,4 @@
+import { Box, Button, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import * as React from 'react'
 
 import styles from './VacancyModal.module.css'
@@ -58,27 +59,39 @@ const VacancyModal: React.FC<VacancyModalProps> = ({ hideModal, vacancy, mode })
   return (
     <Modal onClose={() => hideModal()}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <label>company:</label>
-        <input id='company' value={company} onChange={(e) => setCompany(e.target.value)} />
-        <label>name:</label>
-        <input id='name' value={name} onChange={(e) => setName(e.target.value)} />
-        <label>salary:</label>
-        <input
+        <InputLabel>Company</InputLabel>
+        <Input id='company' value={company} onChange={(e) => setCompany(e.target.value)} />
+        <InputLabel>Name</InputLabel>
+        <Input id='name' value={name} onChange={(e) => setName(e.target.value)} />
+        <InputLabel>Salary</InputLabel>
+        <Input
           id='salary'
           type='number'
           value={salary}
           onChange={(e) => setSalary(isNaN(+e.target.value) ? 0 : +e.target.value)}
         />
-        <label>status:</label>
-        <select value={status} onChange={(e) => setStatus(e.target.value as 'active' | 'disabled')}>
-          <option value={'active'}>Active</option>
-          <option value={'disabled'}>Disabled</option>
-        </select>
-        <label>notes:</label>
-        <input id='notes' value={notes} onChange={(e) => setNotes(e.target.value)} />
-        <div>
-          <button type='submit'>Ok</button>
-        </div>
+        <InputLabel>Status</InputLabel>
+        <Select
+          size='small'
+          value={status}
+          onChange={(e) => setStatus(e.target.value as 'active' | 'disabled')}
+        >
+          <MenuItem value={'active'}>Active</MenuItem>
+          <MenuItem value={'disabled'}>Disabled</MenuItem>
+        </Select>
+        <InputLabel>Notes</InputLabel>
+        <TextField
+          multiline
+          rows={4}
+          id='notes'
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+        <Box sx={{ mt: 1, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button variant='contained' type='submit'>
+            Ok
+          </Button>
+        </Box>
       </form>
     </Modal>
   )
