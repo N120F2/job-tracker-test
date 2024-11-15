@@ -11,6 +11,13 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => {
         <div>Author: Sobal Uladzislau</div>
         <div>Email: sobolvladsav@gmail.com</div>
         <Box sx={{ display: 'flex', gap: 1 }}>
+          <Link
+            href={'https://github.com/N120F2/job-tracker-test'}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Source code
+          </Link>
           <Link href={'https://github.com/N120F2'} target='_blank' rel='noopener noreferrer'>
             GitHub
           </Link>
