@@ -2,6 +2,7 @@
 import "dotenv/config";
 import express, { Express, Request, Response } from "express";
 import { VacancyService } from "./Service/VacancyService";
+import { Connection } from "./Service/Connection";
 
 //config envs
 const port = process.env.PORT || 8081;
@@ -87,7 +88,7 @@ app.delete("/vacancies/:id", async (req: Request, res: Response) => {
 });
 //Start App
 const tryConnect = () => {
-  vacancyService
+  Connection
     .connect()
     .then(() => console.log("DB connected!"))
     .catch((e) => {
