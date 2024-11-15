@@ -3,20 +3,19 @@ import "dotenv/config";
 import express, { Express, Request, Response } from "express";
 import { VacancyService } from "./Service/VacancyService";
 import { Connection } from "./Service/Connection";
+import { VacancyController } from "./Controller/VacancyController";
 
 //config envs
 const port = process.env.PORT || 8081;
-
-const vacancyService = new VacancyService();
-
+//Controllers
+const vacancyController = new VacancyController();
 //app
 const app: Express = express();
 const urlencodedParser = express.urlencoded({ extended: false });
 const jsonParser = express.json();
-
+//Middleware
 app.use(urlencodedParser);
 app.use(jsonParser);
-
 //Cors disabling
 function setHeadersForCORS(response: Response) {
   response.set("Access-Control-Allow-Origin", "*");
@@ -42,54 +41,16 @@ app.get("/", (req: Request, res: Response) => {
 //Routes
 //Vacancies
 //Get list
-app.get("/vacancies", async (req: Request, res: Response) => {
-  try {
-    const vacancies = await vacancyService.getVacancies();
-    res.status(200);
-    res.set("Content-Type", "application/json;charset=utf-8");
-    res.send(vacancies);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
+app.get("/vacancies", vacancyController.get);
 //Create
-app.post("/vacancies", async (req: Request, res: Response) => {
-  try {
-    if (!req.body) res.sendStatus(400);
-    const newVacancy = await vacancyService.addVacancy(req.body);
-    res.status(200);
-    res.set("Content-Type", "application/json;charset=utf-8");
-    res.send(newVacancy);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
+app.post("/vacancies", vacancyController.post);
 //Update
-app.put("/vacancies", async (req: Request, res: Response) => {
-  try {
-    if (!req.body || !req.body?._id) res.sendStatus(400);
-    const updatedVacancy = await vacancyService.updateVacancy(req.body);
-    res.status(200);
-    res.set("Content-Type", "application/json;charset=utf-8");
-    res.send(updatedVacancy);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
+app.put("/vacancies", vacancyController.put);
 //Delete
-app.delete("/vacancies/:id", async (req: Request, res: Response) => {
-  try {
-    if (!req.params?.id) res.sendStatus(400);
-    await vacancyService.deleteVacancy(req.params.id);
-    res.sendStatus(200);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
+app.delete("/vacancies/:id", vacancyController.delete);
 //Start App
 const tryConnect = () => {
-  Connection
-    .connect()
+  Connection.connect()
     .then(() => console.log("DB connected!"))
     .catch((e) => {
       console.error("Error: While connecting DB!", e);
