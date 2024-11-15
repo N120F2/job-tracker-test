@@ -11,18 +11,16 @@ import { VacancyType } from '../../types'
 type VacancyModalCreateProps = {
   mode: 'create'
   vacancy?: undefined
-  isVisible: boolean
   hideModal: () => void
 }
 type VacancyModalUpdateProps = {
   mode: 'update'
   vacancy: VacancyType
-  isVisible: boolean
   hideModal: () => void
 }
 type VacancyModalProps = VacancyModalCreateProps | VacancyModalUpdateProps
 
-const VacancyModal: React.FC<VacancyModalProps> = ({ hideModal, isVisible, vacancy, mode }) => {
+const VacancyModal: React.FC<VacancyModalProps> = ({ hideModal, vacancy, mode }) => {
   const [company, setCompany] = React.useState<string>(vacancy?.company ?? '')
   const [name, setName] = React.useState<string>(vacancy?.name ?? '')
   const [salary, setSalary] = React.useState<number>(vacancy?.salary ?? 0)
@@ -58,7 +56,7 @@ const VacancyModal: React.FC<VacancyModalProps> = ({ hideModal, isVisible, vacan
     hideModal()
   }
   return (
-    <Modal onClose={() => hideModal()} visible={isVisible}>
+    <Modal onClose={() => hideModal()}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <label>company:</label>
         <input id='company' value={company} onChange={(e) => setCompany(e.target.value)} />

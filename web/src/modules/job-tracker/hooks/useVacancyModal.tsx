@@ -28,12 +28,8 @@ export function useVacancyModal(
         } as const)
 
   const modal = useModal(
-    <VacancyModal
-      key={mode}
-      hideModal={() => setIsModalVisible(false)}
-      isVisible={isModalVisible}
-      {...optionalProps}
-    />,
+    <VacancyModal key={mode} hideModal={() => setIsModalVisible(false)} {...optionalProps} />,
+    isModalVisible,
   )
   const showModal = () => setIsModalVisible(true)
   const hideModal = () => setIsModalVisible(false)
