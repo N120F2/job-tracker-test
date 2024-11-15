@@ -29,7 +29,7 @@ app.use(function (request, response, next) {
 });
 
 //static
-const staticResourcePath = __dirname.slice(0, -8) + "web\\build";
+const staticResourcePath = __dirname.slice(0, -8) + "web/build";
 app.use(express.static(staticResourcePath));
 //Entry route
 app.get("/", (req: Request, res: Response) => {
@@ -42,39 +42,60 @@ app.get("/", (req: Request, res: Response) => {
 //Vacancies
 //Get list
 app.get("/vacancies", async (req: Request, res: Response) => {
-  const vacancies = await vacancyService.getVacancies();
-  res.status(200);
-  res.set("Content-Type", "application/json;charset=utf-8");
-  res.send(vacancies);
+  try {
+    const vacancies = await vacancyService.getVacancies();
+    res.status(200);
+    res.set("Content-Type", "application/json;charset=utf-8");
+    res.send(vacancies);
+  } catch (e) {
+    res.sendStatus(500);
+  }
 });
 //Create
 app.post("/vacancies", async (req: Request, res: Response) => {
-  if (!req.body) res.sendStatus(400);
-  const newVacancy = await vacancyService.addVacancy(req.body);
-  res.status(200);
-  res.set("Content-Type", "application/json;charset=utf-8");
-  res.send(newVacancy);
+  try {
+    if (!req.body) res.sendStatus(400);
+    const newVacancy = await vacancyService.addVacancy(req.body);
+    res.status(200);
+    res.set("Content-Type", "application/json;charset=utf-8");
+    res.send(newVacancy);
+  } catch (e) {
+    res.sendStatus(500);
+  }
 });
 //Update
 app.put("/vacancies", async (req: Request, res: Response) => {
-  if (!req.body || !req.body?._id) res.sendStatus(400);
-  const updatedVacancy = await vacancyService.updateVacancy(req.body);
-  res.status(200);
-  res.set("Content-Type", "application/json;charset=utf-8");
-  res.send(updatedVacancy);
+  try {
+    if (!req.body || !req.body?._id) res.sendStatus(400);
+    const updatedVacancy = await vacancyService.updateVacancy(req.body);
+    res.status(200);
+    res.set("Content-Type", "application/json;charset=utf-8");
+    res.send(updatedVacancy);
+  } catch (e) {
+    res.sendStatus(500);
+  }
 });
 //Delete
 app.delete("/vacancies/:id", async (req: Request, res: Response) => {
-  if (!req.params?.id) res.sendStatus(400);
-  await vacancyService.deleteVacancy(req.params.id);
-  res.sendStatus(200);
+  try {
+    if (!req.params?.id) res.sendStatus(400);
+    await vacancyService.deleteVacancy(req.params.id);
+    res.sendStatus(200);
+  } catch (e) {
+    res.sendStatus(500);
+  }
 });
 //Start App
-vacancyService
-  .connect()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`[server]: Server is running at http://localhost:${port}`);
+const tryConnect = () => {
+  vacancyService
+    .connect()
+    .then(() => console.log("DB connected!"))
+    .catch((e) => {
+      console.error("Error: While connecting DB!", e);
+      tryConnect();
     });
-  })
-  .catch(() => console.error("Error: While connecting DB!"));
+};
+tryConnect();
+app.listen(port, () => {
+  console.log(`[server]: Server is running at http://localhost:${port}`);
+});
